@@ -35,6 +35,14 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 		return series.name + ':&nbsp;' + formattedY;
 	},
 
+	enable: function() {
+		this._addListeners();
+	},
+
+	disable: function() {
+		this._removeListeners();
+	},
+
 	update: function(e) {
 
 		e = e || this.lastEvent;
@@ -252,26 +260,49 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 	},
 
 	_addListeners: function() {
+		if (this.listenerMousemove !== undefined) return;
+
+		this.listenerMousemove = function(e) {
+			this.visible = true;
+			this.update(e);
+		}.bind(this);
 
 		this.graph.element.addEventListener(
 			'mousemove',
-			function(e) {
-				this.visible = true;
-				this.update(e);
-			}.bind(this),
+			this.listenerMousemove,
 			false
 		);
 
 		this.graph.onUpdate( function() { this.update() }.bind(this) );
 
+		this.listenerMouseout = function(e) {
+			if (e.relatedTarget && !(e.relatedTarget.compareDocumentPosition(this.graph.element) & Node.DOCUMENT_POSITION_CONTAINS)) {
+				this.hide();
+			}
+		}.bind(this),
+
 		this.graph.element.addEventListener(
 			'mouseout',
-			function(e) {
-				if (e.relatedTarget && !(e.relatedTarget.compareDocumentPosition(this.graph.element) & Node.DOCUMENT_POSITION_CONTAINS)) {
-					this.hide();
-				}
-			}.bind(this),
+			this.listenerMouseout,
 			false
 		);
+	},
+
+	_removeListeners: function() {
+		if (this.listenerMousemove == undefined) return;
+
+		this.graph.element.removeEventListener(
+			'mousemove',
+			this.listenerMousemove
+		);
+
+		delete this.listenerMousemove
+
+		this.graph.element.removeEventListener(
+			'mouseout',
+			this.listenerMouseout
+		);
+
+		delete this.listenerMouseout
 	}
 });
