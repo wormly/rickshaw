@@ -187,7 +187,16 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 		var actualY = series.scale ? series.scale.invert(point.value.y) : point.value.y;
 
 		item.innerHTML = this.formatter(series, point.value.x, actualY, formattedXValue, formattedYValue, point);
-		item.style.top = this.graph.y(point.value.y0 + point.value.y) + 'px';
+
+		var minimumTopOffsetForYAxisLabel = xLabel.clientHeight * 1.5
+		var yAxisPosition = Math.max(this.graph.y(point.value.y0 + point.value.y), 0);
+		item.style.top = yAxisPosition + 'px';
+
+		if (yAxisPosition < minimumTopOffsetForYAxisLabel) {
+			xLabel.style.top = (yAxisPosition + 13) + "px";
+		} else {
+			xLabel.style.top = "";
+		}
 
 		this.element.appendChild(item);
 
