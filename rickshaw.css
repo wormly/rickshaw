@@ -133,6 +133,7 @@
 
 /* annotations */
 
+/*
 .rickshaw_annotation_timeline {
 	height: 1px;
 	border-top: 1px solid #e0e0e0;
@@ -213,6 +214,9 @@
 	display: block;
 	z-index: 50;
 }
+
+*/
+
 .rickshaw_graph .y_axis,
 .rickshaw_graph  .x_axis_d3 {
 	fill: none;
