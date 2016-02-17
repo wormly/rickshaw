@@ -20,11 +20,11 @@
 .rickshaw_graph .detail .x_label {
 	border-radius: 3px;
 	padding: 6px;
-	opacity: 0.5;
+	opacity: 1;
 	border: 1px solid #e0e0e0;
 	font-size: 12px;
 	position: absolute;
-	background: white;
+	background: #f9f9f9;
 	white-space: nowrap;
 }
 .rickshaw_graph .detail .x_label.left {

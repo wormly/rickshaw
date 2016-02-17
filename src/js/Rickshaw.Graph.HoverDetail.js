@@ -193,9 +193,13 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 		item.style.top = yAxisPosition + 'px';
 
 		if (yAxisPosition < minimumTopOffsetForYAxisLabel) {
+			// Reposition below the floating y-axis label:
 			xLabel.style.top = (yAxisPosition + 13) + "px";
+			xLabel.style.opacity = 0.7;
 		} else {
+			// Leave it at the top of the graph (as per default)
 			xLabel.style.top = "";
+			xLabel.style.opacity = 1;
 		}
 
 		this.element.appendChild(item);
