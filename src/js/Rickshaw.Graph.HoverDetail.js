@@ -286,6 +286,27 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 			false
 		);
 
+		var graphElementRect = this.graph.element.getBoundingClientRect();
+
+		this.listenerTouchmove = function (event) {
+			this.visible = true;
+			var touch = event.touches[0] || event.changedTouches[0]
+			// Create a faux "mousemove-like event" for use in update() above:
+			// Need to do this since touch events don't include offsetX/Y co-ords.
+			var newEvent = {
+				offsetX: touch.pageX - graphElementRect.left - window.pageXOffset,
+				offsetY: touch.pageY - graphElementRect.top - window.pageYOffset,
+				target: event.target
+			}
+			this.update(newEvent);
+		}.bind(this),
+
+		this.graph.element.addEventListener(
+			'touchmove',
+			this.listenerTouchmove,
+			false
+		);
+
 		this.graph.onUpdate( function() { this.update() }.bind(this) );
 
 		this.listenerMouseout = function(e) {
@@ -310,6 +331,13 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 		);
 
 		delete this.listenerMousemove
+
+		this.graph.element.removeEventListener(
+			'touchmove',
+			this.listenerTouchmove
+		);
+
+		delete this.listenerTouchmove
 
 		this.graph.element.removeEventListener(
 			'mouseout',
