@@ -226,6 +226,10 @@ Rickshaw.Graph.HoverDetail = Rickshaw.Class.create({
 
 		this.show();
 
+		var itemHalfHeight = item.clientHeight / 1.8;
+		yAxisPosition = Math.max(Math.min(yAxisPosition, this.graph.element.clientHeight - itemHalfHeight), itemHalfHeight);
+		item.style.top = yAxisPosition + 'px';
+
 		// If left-alignment results in any error, try right-alignment.
 		var leftAlignError = this._calcLayoutError(alignables);
 		if (leftAlignError > 0) {
